@@ -277,6 +277,12 @@ def main():
         help='Name of file to create with instructions on how to retrieve your archive',
         default='WHERE-ARE-MY-FILES.txt'
     )
+    argparser.add_argument(
+        '--threads',
+        help='Number of threads to use for archiving. Default: 30',
+        type=int,
+        default=30
+    )
 
     argparser.add_argument(
         '--user',
@@ -298,7 +304,7 @@ def main():
 
     # tarring is CPU bound, so we can parallelize trivially.
     # FIXME: This should be tuneable, or at least default to some multiple of number of cores on the system
-    pool = ThreadPoolExecutor(max_workers=30)
+    pool = ThreadPoolExecutor(max_workers=args.threads)
     futures = []
 
     if args.user:
